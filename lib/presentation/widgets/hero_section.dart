@@ -214,16 +214,24 @@ class _HeroSectionState extends State<HeroSection>
   }
 
   Widget _buildCTAButtons(BuildContext context, bool isMobile) {
+    const buttonHeight = 50.0;
+
     return Wrap(
       spacing: 16,
       runSpacing: 12,
       children: [
         ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size(180, buttonHeight),
+          ),
           icon: const Icon(Icons.play_arrow, size: 14),
           onPressed: () => widget.onCtaTap('apps'),
           label: const Text(AppStrings.viewLiveApps),
         ),
         OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size(180, buttonHeight),
+          ),
           onPressed: () => widget.onCtaTap('contact'),
           child: const Text(AppStrings.getInTouch),
         ),

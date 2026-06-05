@@ -703,7 +703,10 @@ class _EducationCardState extends State<EducationCard> {
         margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: isHovered ? AppColors.card2 : AppColors.card,
-          border: Border.all(color: AppColors.border, width: 1),
+          border: Border.all(
+            color: isHovered ? AppColors.hi : AppColors.border,
+            width: 1,
+          ),
           borderRadius: BorderRadius.circular(4),
         ),
         padding: const EdgeInsets.all(32),
@@ -738,19 +741,19 @@ class _EducationCardState extends State<EducationCard> {
                 ),
               ],
             ),
-            if (isHovered)
-              Positioned(
-                left: 0,
-                top: 0,
-                bottom: 0,
-                child: Container(
-                  width: 3,
-                  decoration: BoxDecoration(
-                    color: AppColors.hi,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-              ),
+            // if (isHovered)
+            //   Positioned(
+            //     left: 0,
+            //     top: 0,
+            //     bottom: 0,
+            //     child: Container(
+            //       width: 3,
+            //       decoration: BoxDecoration(
+            //         color: AppColors.hi,
+            //         borderRadius: BorderRadius.circular(2),
+            //       ),
+            //     ),
+            //   ),
           ],
         ),
       ),

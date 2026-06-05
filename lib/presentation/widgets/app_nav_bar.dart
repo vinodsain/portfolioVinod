@@ -67,9 +67,10 @@ class _AppNavBarState extends State<AppNavBar> {
             children: [
               GestureDetector(
                 onTap: widget.onLogoTap,
-                child: Text(
-                  AppStrings.logo,
-                  style: Theme.of(context).textTheme.headlineSmall,
+                child: CircleAvatar(
+                  radius: 36,
+                  backgroundColor: AppColors.hi,
+                  child: Image.asset("assets/images/logo_new.png"),
                 ),
               ),
 

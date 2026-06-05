@@ -25,7 +25,8 @@ class SkillsSection extends StatelessWidget {
             highlightedWord: 'Skills',
             isRevealed: true,
           ),
-          // Skill Categories Grid
+
+          // ── Skill Category Cards ───────────────────────────────────────────
           Padding(
             padding: const EdgeInsets.only(
               bottom: 32,
@@ -39,10 +40,12 @@ class SkillsSection extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: isMobile ? 300 : 400,
-
                   mainAxisSpacing: 1,
                   crossAxisSpacing: 1,
-                  childAspectRatio: isMobile ? 1.2 : 1.5,
+                  // FIX: Use mainAxisExtent instead of childAspectRatio.
+                  // childAspectRatio causes overflow when chip content wraps
+                  // to more lines than the fixed height allows.
+                  mainAxisExtent: isMobile ? 200 : 180,
                 ),
                 itemCount: controller.skillCategories.length,
                 itemBuilder: (context, index) {
@@ -51,46 +54,40 @@ class SkillsSection extends StatelessWidget {
               ),
             ),
           ),
-          // Proficiency Bars
+
+          // ── Proficiency Bars ───────────────────────────────────────────────
           Obx(
             () => Container(
               decoration: BoxDecoration(
                 border: Border.all(color: AppColors.border, width: 1),
                 borderRadius: BorderRadius.circular(4),
               ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(32),
-                    decoration: const BoxDecoration(color: AppColors.card),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              child: Container(
+                padding: const EdgeInsets.all(32),
+                decoration: const BoxDecoration(color: AppColors.card),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Title
+                    Row(
                       children: [
-                        // Title
-                        Row(
-                          children: [
-                            Container(
-                              width: 16,
-                              height: 1,
-                              color: AppColors.hi,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Proficiency',
-                              style: Theme.of(context).textTheme.labelSmall!
-                                  .copyWith(color: AppColors.hi),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 24),
-                        // Bars
-                        ...controller.proficiencySkills.map(
-                          (skill) => ProficiencyBar(skill: skill),
+                        Container(width: 16, height: 1, color: AppColors.hi),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Proficiency',
+                          style: Theme.of(
+                            context,
+                          ).textTheme.labelSmall!.copyWith(color: AppColors.hi),
                         ),
                       ],
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 24),
+                    // Bars
+                    ...controller.proficiencySkills.map(
+                      (skill) => ProficiencyBar(skill: skill),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -99,6 +96,10 @@ class SkillsSection extends StatelessWidget {
     );
   }
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Skill Card
+// ─────────────────────────────────────────────────────────────────────────────
 
 class SkillCard extends StatefulWidget {
   final SkillCategory category;
@@ -124,33 +125,51 @@ class _SkillCardState extends State<SkillCard> {
           border: Border.all(color: AppColors.border, width: 1),
           borderRadius: BorderRadius.circular(4),
         ),
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Title
-            Row(
+        // FIX: Use padding + let height be driven by mainAxisExtent on the
+        // grid, not by an aspect ratio. ClipRect prevents any overflow from
+        // being visible if a category has unusually many chips.
+        child: ClipRect(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Container(width: 16, height: 1, color: AppColors.hi),
-                const SizedBox(width: 8),
-                Text(
-                  widget.category.title,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.labelSmall!.copyWith(color: AppColors.hi),
+                // Category title
+                Row(
+                  children: [
+                    Container(width: 16, height: 1, color: AppColors.hi),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        widget.category.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(
+                          context,
+                        ).textTheme.labelSmall!.copyWith(color: AppColors.hi),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                // Skill chips
+                Expanded(
+                  child: SingleChildScrollView(
+                    // Allow chips to scroll if they overflow the fixed height
+                    physics: const NeverScrollableScrollPhysics(),
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: widget.category.skills
+                          .map((skill) => _buildSkillChip(context, skill))
+                          .toList(),
+                    ),
+                  ),
                 ),
               ],
             ),
-            const SizedBox(height: 20),
-            // Skills Chips
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: widget.category.skills
-                  .map((skill) => _buildSkillChip(context, skill))
-                  .toList(),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -173,6 +192,10 @@ class _SkillCardState extends State<SkillCard> {
   }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Proficiency Bar
+// ─────────────────────────────────────────────────────────────────────────────
+
 class ProficiencyBar extends StatefulWidget {
   final ProficiencySkill skill;
 
@@ -185,6 +208,7 @@ class ProficiencyBar extends StatefulWidget {
 class _ProficiencyBarState extends State<ProficiencyBar>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  late Animation<double> _animation;
 
   @override
   void initState() {
@@ -193,12 +217,22 @@ class _ProficiencyBarState extends State<ProficiencyBar>
       duration: const Duration(milliseconds: 1200),
       vsync: this,
     );
+    _animation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOut,
+    );
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -230,15 +264,13 @@ class _ProficiencyBarState extends State<ProficiencyBar>
           ),
           const SizedBox(height: 6),
           AnimatedBuilder(
-            animation: _animationController,
+            animation: _animation,
             builder: (context, child) {
               return ClipRRect(
                 borderRadius: BorderRadius.circular(2),
                 child: LinearProgressIndicator(
                   minHeight: 3,
-                  value:
-                      _animationController.value *
-                      (widget.skill.percentage / 100),
+                  value: _animation.value * (widget.skill.percentage / 100),
                   backgroundColor: AppColors.border2,
                   valueColor: AlwaysStoppedAnimation<Color>(
                     Color.lerp(
@@ -260,11 +292,5 @@ class _ProficiencyBarState extends State<ProficiencyBar>
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
   }
 }

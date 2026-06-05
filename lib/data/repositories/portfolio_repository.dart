@@ -353,6 +353,6 @@ class PortfolioRepository {
 
   // Get stats
   Map<String, String> getStats() {
-    return {'experience': '2+', 'apps': '5+', 'apis': '25+', 'companies': '3'};
+    return {'experience': '2+', 'apps': '8+', 'apis': '400+', 'companies': '3'};
   }
 }
