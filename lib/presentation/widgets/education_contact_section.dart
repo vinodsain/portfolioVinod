@@ -718,7 +718,7 @@ class _EducationCardState extends State<EducationCard> {
                 Text(
                   widget.entry.period,
                   style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                    color: AppColors.hi,
+                    color: AppColors.ink3,
                     fontSize: 10,
                   ),
                 ),
@@ -727,6 +727,7 @@ class _EducationCardState extends State<EducationCard> {
                   widget.entry.degree,
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     fontWeight: FontWeight.w700,
+                    color: AppColors.ink3,
                     fontSize: 16,
                   ),
                 ),

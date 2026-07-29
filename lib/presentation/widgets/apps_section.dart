@@ -314,7 +314,7 @@ class _AppCardState extends State<AppCard> {
                         width: 5,
                         height: 5,
                         decoration: const BoxDecoration(
-                          color: AppColors.hi,
+                          color: AppColors.ink2,
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -322,7 +322,7 @@ class _AppCardState extends State<AppCard> {
                       Text(
                         'Live',
                         style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                          color: AppColors.hi,
+                          color: AppColors.ink2,
                           fontSize: 10,
                         ),
                       ),
@@ -384,13 +384,13 @@ class _AppCardState extends State<AppCard> {
               Icon(
                 isAndroid ? Icons.android : Icons.apple,
                 size: 13,
-                color: isAndroid ? AppColors.hi : Colors.grey,
+                color: isAndroid ? AppColors.ink2 : Colors.grey,
               ),
               const SizedBox(width: 6),
               Text(
                 label,
                 style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                  color: isAndroid ? AppColors.hi : Colors.grey,
+                  color: isAndroid ? AppColors.ink2 : Colors.grey,
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
                 ),

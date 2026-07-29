@@ -29,7 +29,7 @@ class SkillsSection extends StatelessWidget {
           // ── Skill Category Cards ───────────────────────────────────────────
           Padding(
             padding: const EdgeInsets.only(
-              bottom: 32,
+              bottom: 16,
               right: 4,
               left: 4,
               top: 16,
@@ -75,9 +75,8 @@ class SkillsSection extends StatelessWidget {
                         const SizedBox(width: 8),
                         Text(
                           'Proficiency',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.labelSmall!.copyWith(color: AppColors.hi),
+                          style: Theme.of(context).textTheme.labelSmall!
+                              .copyWith(color: AppColors.ink2),
                         ),
                       ],
                     ),
@@ -130,7 +129,7 @@ class _SkillCardState extends State<SkillCard> {
         // being visible if a category has unusually many chips.
         child: ClipRect(
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -147,7 +146,7 @@ class _SkillCardState extends State<SkillCard> {
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(
                           context,
-                        ).textTheme.labelSmall!.copyWith(color: AppColors.hi),
+                        ).textTheme.labelSmall!.copyWith(color: AppColors.ink2),
                       ),
                     ),
                   ],
@@ -255,7 +254,7 @@ class _ProficiencyBarState extends State<ProficiencyBar>
               Text(
                 '${widget.skill.percentage}%',
                 style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                  color: AppColors.hi,
+                  color: AppColors.ink2,
                   fontSize: 11,
                   fontFamily: 'JetBrains Mono',
                 ),

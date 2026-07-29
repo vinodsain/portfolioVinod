@@ -127,7 +127,7 @@ class TimelineEntry extends StatelessWidget {
                     experience.period,
                     style: Theme.of(
                       context,
-                    ).textTheme.labelSmall!.copyWith(color: AppColors.hi),
+                    ).textTheme.labelSmall!.copyWith(color: AppColors.ink3),
                   ),
 
                   const SizedBox(height: 8),
@@ -189,14 +189,14 @@ class ProjectBullet extends StatelessWidget {
             children: [
               const Text(
                 '▶',
-                style: TextStyle(fontSize: 12, color: AppColors.hi),
+                style: TextStyle(fontSize: 12, color: AppColors.ink3),
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   project.name,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: AppColors.hi,
+                    color: AppColors.ink3,
                     fontWeight: FontWeight.w600,
                     fontSize: 13,
                   ),

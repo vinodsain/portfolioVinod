@@ -153,7 +153,7 @@ class _ProjectCardState extends State<ProjectCard> {
                                           .textTheme
                                           .labelSmall!
                                           .copyWith(
-                                            color: AppColors.hi,
+                                            color: AppColors.ink2,
                                             fontSize: 11,
                                           ),
                                     ),

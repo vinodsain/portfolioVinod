@@ -44,249 +44,280 @@ class _HeroSectionState extends State<HeroSection>
 
     return Container(
       constraints: BoxConstraints(
-        minHeight: MediaQuery.of(context).viewInsets.bottom > 0
-            ? MediaQuery.of(context).size.height
-            : MediaQuery.of(context).size.height,
+        minHeight: MediaQuery.of(context).size.height,
       ),
-      padding: EdgeInsets.symmetric(
-        horizontal: isMobile ? 24 : 48,
-        vertical: isMobile ? 60 : 80,
-      ),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1100),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Badge
-              AnimatedBuilder(
-                animation: _animationController,
-                builder: (context, child) {
-                  return Opacity(
-                    opacity: _animationController.value,
-                    child: Transform.translate(
-                      offset: Offset(0, 50 * (1 - _animationController.value)),
-                      child: child,
-                    ),
-                  );
-                },
-                child: _buildBadge(),
-              ),
-              SizedBox(height: isMobile ? 24 : 32),
-
-              // Name
-              AnimatedBuilder(
-                animation: _animationController,
-                builder: (context, child) {
-                  return Opacity(
-                    opacity: _animationController.value,
-                    child: Transform.translate(
-                      offset: Offset(0, 60 * (1 - _animationController.value)),
-                      child: child,
-                    ),
-                  );
-                },
-                child: _buildName(context, isMobile),
-              ),
-              SizedBox(height: isMobile ? 20 : 24),
-
-              // Description
-              AnimatedBuilder(
-                animation: _animationController,
-                builder: (context, child) {
-                  return Opacity(
-                    opacity: _animationController.value,
-                    child: Transform.translate(
-                      offset: Offset(0, 60 * (1 - _animationController.value)),
-                      child: child,
-                    ),
-                  );
-                },
-                child: _buildDescription(context),
-              ),
-              SizedBox(height: isMobile ? 32 : 48),
-
-              // CTA Buttons
-              AnimatedBuilder(
-                animation: _animationController,
-                builder: (context, child) {
-                  return Opacity(
-                    opacity: _animationController.value,
-                    child: Transform.translate(
-                      offset: Offset(0, 60 * (1 - _animationController.value)),
-                      child: child,
-                    ),
-                  );
-                },
-                child: _buildCTAButtons(context, isMobile),
-              ),
-              SizedBox(height: isMobile ? 40 : 64),
-
-              // Stats Strip
-              AnimatedBuilder(
-                animation: _animationController,
-                builder: (context, child) {
-                  return Opacity(
-                    opacity: _animationController.value,
-                    child: Transform.translate(
-                      offset: Offset(0, 60 * (1 - _animationController.value)),
-                      child: child,
-                    ),
-                  );
-                },
-                child: _buildStatsStrip(context, isMobile),
-              ),
-
-              // Scroll Indicator
-              Center(
-                child: Column(
-                  children: [
-                    Text(
-                      AppStrings.scroll,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.labelSmall!.copyWith(color: AppColors.ink3),
-                    ),
-                    const SizedBox(height: 8),
-                    CustomPaint(
-                      painter: ScrollIndicatorPainter(),
-                      size: const Size(1, 40),
-                    ),
-                  ],
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [AppColors.bg, AppColors.bg2],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBadge() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: AppColors.hi.withOpacity(0.08),
-        border: Border.all(color: AppColors.hi.withOpacity(0.2), width: 1),
-        borderRadius: BorderRadius.circular(100),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 6,
-            height: 6,
-            decoration: BoxDecoration(
-              color: AppColors.hi,
-              shape: BoxShape.circle,
             ),
           ),
-          const SizedBox(width: 8),
-          Text(
-            AppStrings.availableBadge,
-            style: Theme.of(
-              context,
-            ).textTheme.labelSmall!.copyWith(color: AppColors.hi),
+
+          Positioned(
+            top: -150,
+            right: -100,
+            child: Container(
+              width: 400,
+              height: 400,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.hi.withOpacity(.08),
+              ),
+            ),
+          ),
+
+          Positioned(
+            bottom: -200,
+            left: -150,
+            child: Container(
+              width: 450,
+              height: 450,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.hi4.withOpacity(.08),
+              ),
+            ),
+          ),
+
+          Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1400),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isMobile ? 24 : 80,
+                  vertical: 80,
+                ),
+                child: isMobile
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildHeroContent(true),
+                          const SizedBox(height: 60),
+                          _buildPhoneMockup(),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          Expanded(flex: 6, child: _buildHeroContent(false)),
+                          Expanded(flex: 4, child: _buildPhoneMockup()),
+                        ],
+                      ),
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildName(BuildContext context, bool isMobile) {
-    return Text(
-      AppStrings.heroName,
-      style: Theme.of(
-        context,
-      ).textTheme.displayLarge!.copyWith(fontSize: isMobile ? 56 : 120),
-    );
-  }
+  Widget _buildPhoneMockup() {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: const Duration(seconds: 2),
+      curve: Curves.easeOut,
+      builder: (context, value, child) {
+        return Transform.translate(
+          offset: Offset(0, 20 * (1 - value)),
+          child: child,
+        );
+      },
+      child: Center(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              width: 350,
+              height: 350,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [AppColors.hi.withOpacity(.3), Colors.transparent],
+                ),
+              ),
+            ),
 
-  Widget _buildDescription(BuildContext context) {
-    return SizedBox(
-      width: 700,
-      child: Text(
-        AppStrings.heroDesc,
-        style: Theme.of(context).textTheme.bodyLarge,
+            Container(
+              width: 280,
+              height: 580,
+              decoration: BoxDecoration(
+                color: AppColors.card,
+                borderRadius: BorderRadius.circular(40),
+                border: Border.all(color: AppColors.border2),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.hi.withOpacity(.25),
+                    blurRadius: 40,
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child: Image.asset(
+                  "assets/images/preview.png",
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildCTAButtons(BuildContext context, bool isMobile) {
-    const buttonHeight = 50.0;
-
-    return Wrap(
-      spacing: 16,
-      runSpacing: 12,
+  Widget _buildHeroContent(bool isMobile) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            minimumSize: const Size(180, buttonHeight),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          decoration: BoxDecoration(
+            color: AppColors.hi.withOpacity(.08),
+            borderRadius: BorderRadius.circular(100),
+            border: Border.all(color: AppColors.hi.withOpacity(.3)),
           ),
-          icon: const Icon(Icons.play_arrow, size: 14),
-          onPressed: () => widget.onCtaTap('apps'),
-          label: const Text(AppStrings.viewLiveApps),
-        ),
-        OutlinedButton(
-          style: OutlinedButton.styleFrom(
-            minimumSize: const Size(180, buttonHeight),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 8,
+                height: 8,
+                decoration: const BoxDecoration(
+                  color: AppColors.ink2,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                AppStrings.availableBadge,
+                style: const TextStyle(
+                  color: AppColors.ink2,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
           ),
-          onPressed: () => widget.onCtaTap('contact'),
-          child: const Text(AppStrings.getInTouch),
         ),
+
+        const SizedBox(height: 30),
+
+        Text(
+          "Hi, I'm",
+          style: TextStyle(fontSize: isMobile ? 24 : 32, color: AppColors.ink2),
+        ),
+
+        const SizedBox(height: 8),
+
+        Text(
+          "VINOD",
+          style: TextStyle(
+            fontSize: isMobile ? 60 : 120,
+            height: .9,
+            fontWeight: FontWeight.w900,
+            color: AppColors.ink,
+          ),
+        ),
+
+        ShaderMask(
+          shaderCallback: (bounds) {
+            return const LinearGradient(
+              colors: [AppColors.hi, AppColors.hi4],
+            ).createShader(bounds);
+          },
+          child: Text(
+            "SAIN",
+            style: TextStyle(
+              fontSize: isMobile ? 60 : 120,
+              height: .9,
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 30),
+
+        SizedBox(
+          width: 650,
+          child: Text(
+            AppStrings.heroDesc,
+            style: TextStyle(
+              fontSize: isMobile ? 16 : 20,
+              height: 1.8,
+              color: AppColors.ink2,
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 40),
+
+        Wrap(
+          spacing: 16,
+          runSpacing: 16,
+          children: [
+            ElevatedButton.icon(
+              icon: const Icon(Icons.rocket_launch, color: AppColors.ink2),
+              label: const Text(
+                "View Projects",
+                style: TextStyle(color: AppColors.ink2),
+              ),
+              onPressed: () => widget.onCtaTap("projects"),
+            ),
+
+            OutlinedButton(
+              onPressed: () => widget.onCtaTap("contact"),
+              child: const Text("Hire Me"),
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 50),
+
+        _buildModernStats(),
       ],
     );
   }
 
-  Widget _buildStatsStrip(BuildContext context, bool isMobile) {
-    return Obx(() {
-      final stats = widget.controller.stats;
-      if (stats.isEmpty) return const SizedBox.shrink();
-
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: AppColors.border),
-          borderRadius: BorderRadius.circular(4),
-          color: AppColors.card,
-        ),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              _buildStatItem(context, stats['experience']!, 'Years Exp.'),
-              Container(width: 1, height: 80, color: AppColors.border),
-              _buildStatItem(context, stats['apps']!, 'Apps Shipped'),
-              Container(width: 1, height: 80, color: AppColors.border),
-              _buildStatItem(context, stats['apis']!, 'APIs Integrated'),
-              Container(width: 1, height: 80, color: AppColors.border),
-              _buildStatItem(context, stats['companies']!, 'Companies'),
-            ],
-          ),
-        ),
-      );
-    });
+  Widget _buildModernStats() {
+    return Wrap(
+      spacing: 20,
+      runSpacing: 20,
+      children: [
+        _statCard("2+", "Years"),
+        _statCard("10+", "Apps"),
+        _statCard("300+", "APIs"),
+        _statCard("3", "Companies"),
+      ],
+    );
   }
 
-  Widget _buildStatItem(BuildContext context, String value, String label) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+  Widget _statCard(String value, String title) {
+    return Container(
+      width: 130,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColors.card.withOpacity(.6),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.border),
+      ),
       child: Column(
         children: [
           Text(
             value,
-            style: Theme.of(context).textTheme.displayMedium!.copyWith(
-              color: AppColors.hi,
-              fontSize: 28,
+            style: const TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              color: AppColors.ink2,
             ),
           ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: Theme.of(
-              context,
-            ).textTheme.labelSmall!.copyWith(color: AppColors.ink3),
-          ),
+          const SizedBox(height: 8),
+          Text(title, style: const TextStyle(color: AppColors.ink2)),
         ],
       ),
     );

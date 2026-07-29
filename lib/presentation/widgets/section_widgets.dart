@@ -43,7 +43,7 @@ class SectionHeader extends StatelessWidget {
                       label,
                       style: Theme.of(
                         context,
-                      ).textTheme.labelSmall!.copyWith(color: AppColors.hi),
+                      ).textTheme.labelSmall!.copyWith(color: AppColors.ink2),
                     ),
                   ],
                 ),
@@ -61,7 +61,7 @@ class SectionHeader extends StatelessWidget {
                     if (highlightedWord != null) ...[
                       TextSpan(
                         text: highlightedWord,
-                        style: const TextStyle(color: AppColors.hi),
+                        style: const TextStyle(color: AppColors.ink2),
                       ),
                     ] else ...[
                       TextSpan(
